@@ -2,7 +2,6 @@ from PIL import Image # import the necessary packages
 import pytesseract
 import cv2
 import os
-import re
 
 # ============================================================================================
 
@@ -39,8 +38,8 @@ def extract_text(mpath_to_File, mpreprocess):
 # ============================================================================================
 
 def write_to_disk(string, filename):
-	output_filename = filename.replace("tiff", "txt")
-	save_path = "./output"
+	output_filename = filename.replace("jpg", "txt")
+	save_path = "/home/ubuntu/v-tutor-backend/v-tutor-backend/ocroutput"
 	if not (os.path.exists(save_path)):
 		try:  
 			os.mkdir(save_path)
@@ -49,7 +48,6 @@ def write_to_disk(string, filename):
 		else:  
 			print ("Successfully created the directory %s " % save_path)
 	with open(os.path.join(save_path, output_filename), "w") as ocr_file:
-		# ocr_file.write(re.sub('\s+',' ',string))
 		ocr_file.write(string)
 	return
 
@@ -60,7 +58,7 @@ def run_ocr(image_path, preprocess="thresh"):
 	files = os.listdir(image_path)
 	for file in files:
 		path_to_File = os.path.join(image_path, file)
-		print(path_to_File)
+		print("Running OCR on : " + path_to_File)
 		write_to_disk(extract_text(path_to_File, preprocess), file)
 	return
 
